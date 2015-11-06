@@ -53,6 +53,7 @@ DEVICE_PACKAGE_OVERLAYS := device/sony/taoshan/overlay
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/rootdir/root/init.qcom.rc:root/init.qcom.rc \
     $(LOCAL_PATH)/rootdir/root/fstab.qcom:root/fstab.qcom \
+    $(LOCAL_PATH)/rootdir/root/fstab.qcom2:root/fstab.qcom2 \
     $(LOCAL_PATH)/rootdir/root/ueventd.qcom.rc:root/ueventd.qcom.rc \
     $(LOCAL_PATH)/rootdir/root/init.qcom.usb.rc:root/init.qcom.usb.rc \
     $(LOCAL_PATH)/rootdir/root/init.qcom.power.rc:root/init.qcom.power.rc \
