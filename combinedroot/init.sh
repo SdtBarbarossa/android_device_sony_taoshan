@@ -55,10 +55,42 @@ if [ $? -eq 42 ] || busybox grep -q warmboot=0x77665502 /proc/cmdline ; then
 	busybox rm /sbin/sh
 	load_image=/sbin/ramdisk-recovery.cpio
 else
-	busybox echo 'ANDROID BOOT' >>boot.txt
+busybox echo 'ANDROID BOOT' >>boot.txt
 fi
 
-# poweroff LED
+
+# green LED
+busybox echo 0 > ${BOOTREC_LED_RED}
+busybox echo 255 > ${BOOTREC_LED_GREEN}
+busybox echo 0 > ${BOOTREC_LED_BLUE}
+
+# keycheck
+busybox timeout -t 3 keycheck
+
+# fallback
+if [ $? -eq 63 ] || busybox grep -q warmboot=0x77665502 /proc/cmdline ; then
+
+# green LED
+busybox echo 0 > ${BOOTREC_LED_RED}
+busybox echo 0 > ${BOOTREC_LED_GREEN}
+busybox echo 0 > ${BOOTREC_LED_BLUE}
+
+# unpack the ramdisk image
+busybox cpio -i < ${load_image}
+
+busybox dd if=/qcome.fstab2 of=/qcom.fstab
+
+busybox umount /proc
+busybox umount /sys
+
+busybox rm -fr /dev/*
+busybox date >>boot.txt
+export PATH="${_PATH}"
+exec /init
+
+else
+
+# green LED
 busybox echo 0 > ${BOOTREC_LED_RED}
 busybox echo 0 > ${BOOTREC_LED_GREEN}
 busybox echo 0 > ${BOOTREC_LED_BLUE}
